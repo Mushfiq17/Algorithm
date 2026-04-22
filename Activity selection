@@ -1,0 +1,45 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct Task {
+    int start, end;
+};
+
+// Sort tasks by finishing time
+bool compare(Task a, Task b) {
+    return a.end < b.end;
+}
+
+int main() {
+    int n;
+    cout << "Enter number of tasks: ";
+    cin >> n;
+
+    vector<Task> tasks(n);
+
+    cout << "Enter start and end times:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> tasks[i].start >> tasks[i].end;
+    }
+
+    // Step 1: Sort by end time
+    sort(tasks.begin(), tasks.end(), compare);
+
+    // Step 2: Select tasks greedily
+    int count = 1;                  // select first task
+    int last_end = tasks[0].end;    // finish time of first task
+
+    for (int i = 1; i < n; i++) {
+        if (tasks[i].start >= last_end) {
+            count++;
+            last_end = tasks[i].end;
+        }
+    }
+
+    cout << "Maximum non-overlapping tasks: " << count << endl;
+
+    return 0;
+}
+
